@@ -1,0 +1,538 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="proyecto_obras" Class="DataClassesModelDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=25.139.106.85\ARQUING;Initial Catalog=proyecto_obras;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="proyecto_obrasConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Actividad" Member="Actividad">
+    <Type Name="Actividad">
+      <Column Name="IdActividad" AutoSync="Never" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DescripcionActividad" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="TipoActividad" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UnidadMedida" Type="System.String" DbType="VarChar(3) NOT NULL" CanBeNull="false" />
+      <Column Name="ValorUnitario" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Association Name="Actividad_ContratoActividad" Member="ContratoActividad" ThisKey="IdActividad" OtherKey="Actividad" Type="ContratoActividad" />
+      <Association Name="Actividad_ContratoActividadAjustado" Member="ContratoActividadAjustado" ThisKey="IdActividad" OtherKey="ActividadAjustada" Type="ContratoActividadAjustado" />
+      <Association Name="TipoActividad_Actividad" Member="TipoActividad1" ThisKey="TipoActividad" OtherKey="IdTipoActividad" Type="TipoActividad" IsForeignKey="true" />
+      <Association Name="UnidadMedida_Actividad" Member="UnidadMedida1" ThisKey="UnidadMedida" OtherKey="CodUnidad" Type="UnidadMedida" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AsignacionObra" Member="AsignacionObra">
+    <Type Name="AsignacionObra">
+      <Column Name="IdAsignacion" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DescripcionAsignacion" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="AsignacionObra_Contrato" Member="Contrato" ThisKey="IdAsignacion" OtherKey="Asignacion" Type="Contrato" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ContratoActividad" Member="ContratoActividad">
+    <Type Name="ContratoActividad">
+      <Column Name="Contrato" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Actividad" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CantidadReal" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="CantidadPresupuestada" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="ValorReal" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="ValorPresupuestado" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Association Name="Actividad_ContratoActividad" Member="Actividad1" ThisKey="Actividad" OtherKey="IdActividad" Type="Actividad" IsForeignKey="true" />
+      <Association Name="Contrato_ContratoActividad" Member="Contrato1" ThisKey="Contrato" OtherKey="CodigoContrato" Type="Contrato" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CostosIndirectosContrato" Member="CostosIndirectosContrato">
+    <Type Name="CostosIndirectosContrato">
+      <Column Name="CodigoContrato" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IdTipoCostoIndirecto" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Porcentaje" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="ValorPresupuestado" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="ValorReal" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Association Name="TipoCostosIndirectos_CostosIndirectosContrato" Member="TipoCostosIndirectos" ThisKey="IdTipoCostoIndirecto" OtherKey="IdTipoCostoIndirecto" Type="TipoCostosIndirectos" IsForeignKey="true" />
+      <Association Name="Contrato_CostosIndirectosContrato" Member="Contrato" ThisKey="CodigoContrato" OtherKey="CodigoContrato" Type="Contrato" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Empresa" Member="Empresa">
+    <Type Name="Empresa">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TerceroEmpresa" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RazonSocial" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="RepresentanteLegal" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Empresa_Contrato" Member="Contrato" ThisKey="Id" OtherKey="Oferente" Type="Contrato" />
+      <Association Name="Tercero_Empresa" Member="Tercero" ThisKey="RepresentanteLegal" OtherKey="IdTercero" Type="Tercero" IsForeignKey="true" />
+      <Association Name="Tercero_Empresa1" Member="Tercero1" ThisKey="TerceroEmpresa" OtherKey="IdTercero" Type="Tercero" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EstadoContrato" Member="EstadoContrato">
+    <Type Name="EstadoContrato">
+      <Column Name="IdEstado" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DescripcionEstado" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="EstadoContrato_Contrato" Member="Contrato" ThisKey="IdEstado" OtherKey="Estado" Type="Contrato" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PagosContrato" Member="PagosContrato">
+    <Type Name="PagosContrato">
+      <Column Name="IdPago" AutoSync="Never" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DescripcionPago" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="Contrato" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PorcentajePago" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="FechaPago" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ValorPago" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Association Name="Contrato_PagosContrato" Member="Contrato1" ThisKey="Contrato" OtherKey="CodigoContrato" Type="Contrato" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Par_parametro" Member="Par_parametro">
+    <Type Name="Par_parametro">
+      <Column Name="IdParametro" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DescripcionParametro" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="FechaUso" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ValorParametro" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Predio" Member="Predio">
+    <Type Name="Predio">
+      <Column Name="chip" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Descripcion" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Direccion" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Propietario" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MatriculaInmobiliaria" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Barrio" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Estrato" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Localidad" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Predio_Contrato" Member="Contrato" ThisKey="chip" OtherKey="PredioContrato" Type="Contrato" />
+      <Association Name="Tercero_Predio" Member="Tercero" ThisKey="Propietario" OtherKey="IdTercero" Type="Tercero" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Roles" Member="Roles">
+    <Type Name="Roles">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NombreRol" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Roles_RolesUsuario" Member="RolesUsuario" ThisKey="Id" OtherKey="id_rol" Type="RolesUsuario" />
+      <Association Name="Roles_RolesMenu" Member="RolesMenu" ThisKey="Id" OtherKey="idRol" Type="RolesMenu" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Tercero" Member="Tercero">
+    <Type Name="Tercero">
+      <Column Name="IdTercero" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TipoIdentificacion" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="Identificacion" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Direccion" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="TelefonoFijo" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="Celular" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="TipoTercero" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Tercero_Empresa" Member="Empresa" ThisKey="IdTercero" OtherKey="RepresentanteLegal" Type="Empresa" />
+      <Association Name="Tercero_Empresa1" Member="Empresa1" ThisKey="IdTercero" OtherKey="TerceroEmpresa" Type="Empresa" />
+      <Association Name="Tercero_Predio" Member="Predio" ThisKey="IdTercero" OtherKey="Propietario" Type="Predio" />
+      <Association Name="Tercero_Contrato" Member="Contrato" ThisKey="IdTercero" OtherKey="ContratanteContrato" Type="Contrato" />
+      <Association Name="Tercero_Contrato1" Member="Contrato1" ThisKey="IdTercero" OtherKey="Interventor" Type="Contrato" />
+      <Association Name="Tercero_Contrato2" Member="Contrato2" ThisKey="IdTercero" OtherKey="Supervisor" Type="Contrato" />
+      <Association Name="Tercero_Usuarios" Member="Usuarios" ThisKey="IdTercero" OtherKey="Tercero" Type="Usuarios" />
+      <Association Name="TipoIdentificacion_Tercero" Member="TipoIdentificacion1" ThisKey="TipoIdentificacion" OtherKey="IdTipo" Type="TipoIdentificacion" IsForeignKey="true" />
+      <Association Name="TipoTercero_Tercero" Member="TipoTercero1" ThisKey="TipoTercero" OtherKey="IdTipoTercero" Type="TipoTercero" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TipoActividad" Member="TipoActividad">
+    <Type Name="TipoActividad">
+      <Column Name="IdTipoActividad" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DescripcionTipoActividad" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PrioridadAjuste" Type="System.Int32" CanBeNull="true" />
+      <Association Name="TipoActividad_Actividad" Member="Actividad" ThisKey="IdTipoActividad" OtherKey="TipoActividad" Type="Actividad" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TipoCostosIndirectos" Member="TipoCostosIndirectos">
+    <Type Name="TipoCostosIndirectos">
+      <Column Name="IdTipoCostoIndirecto" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Descripcion" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Estado" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="TipoCostosIndirectos_CostosIndirectosContrato" Member="CostosIndirectosContrato" ThisKey="IdTipoCostoIndirecto" OtherKey="IdTipoCostoIndirecto" Type="CostosIndirectosContrato" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TipoIdentificacion" Member="TipoIdentificacion">
+    <Type Name="TipoIdentificacion">
+      <Column Name="IdTipo" Type="System.String" DbType="VarChar(2) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DescripcionTipoIdentificacion" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="TipoIdentificacion_Tercero" Member="Tercero" ThisKey="IdTipo" OtherKey="TipoIdentificacion" Type="Tercero" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TipoObra" Member="TipoObra">
+    <Type Name="TipoObra">
+      <Column Name="IdTipoObra" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DescripcionObra" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="TipoObra_Contrato" Member="Contrato" ThisKey="IdTipoObra" OtherKey="TipoObra" Type="Contrato" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TipoTercero" Member="TipoTercero">
+    <Type Name="TipoTercero">
+      <Column Name="IdTipoTercero" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DescripcionTipoTercero" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="TipoTercero_Tercero" Member="Tercero" ThisKey="IdTipoTercero" OtherKey="TipoTercero" Type="Tercero" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UnidadMedida" Member="UnidadMedida">
+    <Type Name="UnidadMedida">
+      <Column Name="DescripcionUnidad" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CodUnidad" Type="System.String" DbType="VarChar(3) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="UnidadMedida_Actividad" Member="Actividad" ThisKey="CodUnidad" OtherKey="UnidadMedida" Type="Actividad" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Vista_ActividadesContrato" Member="Vista_ActividadesContrato">
+    <Type Name="Vista_ActividadesContrato">
+      <Column Name="CodigoContrato" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DescrTipoAct" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DescripcionActividad" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="UnMedActividad" Type="System.String" DbType="VarChar(3) NOT NULL" CanBeNull="false" />
+      <Column Name="ValorUniActividad" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="CantPresActividad" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="CantRealActividad" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Vista_CostosIndirectosContrato" Member="Vista_CostosIndirectosContrato">
+    <Type Name="Vista_CostosIndirectosContrato">
+      <Column Name="CodigoContrato" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DescrCostoIndirecto" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="PorcentajeCostoIndirecto" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="ValPresCostoIndirecto" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="ValRealCostoIndirecto" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="ValorParametro" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Vista_InformeLiquidacion" Member="Vista_InformeLiquidacion">
+    <Type Name="Vista_InformeLiquidacion">
+      <Column Name="DescripcionObra" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="TipoIdContratante" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="IdContratante" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="NombreContratante" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="chip" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Direccion" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Barrio" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Localidad" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="TipoIdOferente" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="IdOferente" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="NombreOferente" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DireccionOferente" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="TipoIdSupervisor" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="IdSupervisor" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="NombreSupervisor" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DireccionSupervisor" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="FechaActaInicio" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PlazoInicial" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PlazoAdicional" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TiempoSuspencion" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="FechaReinicio" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="FechaTerminacion" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PlazoTotal" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ValorSubsidio" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="ValorAportesBeneficiario" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="ValorAportesOferente" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="ValorContrato" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="DescrTipoAct" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DescripcionActividad" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="UnMedActividad" Type="System.String" DbType="VarChar(3) NOT NULL" CanBeNull="false" />
+      <Column Name="ValorUniActividad" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="CantPresActividad" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="CantRealActividad" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="DescrCostoIndirecto" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="PorcentajeCostoIndirecto" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="ValPresCostoIndirecto" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="ValRealCostoIndirecto" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="ValorParametro" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="DescripcionPago" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="PorcentajePago" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="FechaPago" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ValorPago" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="TipoIdRepLegal" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="IdRepLegal" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="NombreRepLegal" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Vista_PagosContrato" Member="Vista_PagosContrato">
+    <Type Name="Vista_PagosContrato">
+      <Column Name="CodigoContrato" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DescripcionPago" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="PorcentajePago" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="FechaPago" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ValorPago" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vista_contratos" Member="vista_contratos">
+    <Type Name="vista_contratos">
+      <Column Name="CodigoContrato" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NombreContrato" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DescripcionObra" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="IdTipoObra" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TerceroOferente" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Oferente" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="terceroInterventor" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="interventor" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="IdAsignacion" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DescripcionAsignacion" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="tercerosupervisor" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="supervisor" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="terceroContratante" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="contratante" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ValorContrato" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="ValorSubsidio" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="ValorAportesBeneficiario" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="ValorAportesOferente" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="PredioContrato" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Proyecto" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="IdEstado" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DescripcionEstado" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="FechaActaInicio" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="PlazoInicial" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PlazoAdicional" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TiempoSuspencion" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="FechaReinicio" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="FechaTerminacion" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="PlazoTotal" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Contrato" Member="Contrato">
+    <Type Name="Contrato">
+      <Column Name="CodigoContrato" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NombreContrato" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="TipoObra" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Oferente" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Interventor" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Asignacion" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Supervisor" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ContratanteContrato" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ValorContrato" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="ValorSubsidio" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="ValorAportesBeneficiario" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="ValorAportesOferente" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="PredioContrato" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Proyecto" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Estado" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FechaActaInicio" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PlazoInicial" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PlazoAdicional" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TiempoSuspencion" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="FechaReinicio" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="FechaTerminacion" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PlazoTotal" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Grupo" Type="System.Int32" CanBeNull="true" />
+      <Association Name="Contrato_ContratoActividad" Member="ContratoActividad" ThisKey="CodigoContrato" OtherKey="Contrato" Type="ContratoActividad" />
+      <Association Name="Contrato_CostosIndirectosContrato" Member="CostosIndirectosContrato" ThisKey="CodigoContrato" OtherKey="CodigoContrato" Type="CostosIndirectosContrato" />
+      <Association Name="Contrato_PagosContrato" Member="PagosContrato" ThisKey="CodigoContrato" OtherKey="Contrato" Type="PagosContrato" />
+      <Association Name="Contrato_SuspencionContrato" Member="SuspencionContrato" ThisKey="CodigoContrato" OtherKey="Contrato" Type="SuspencionContrato" />
+      <Association Name="Contrato_SancionesContrato" Member="SancionesContrato" ThisKey="CodigoContrato" OtherKey="Contrato" Type="SancionesContrato" />
+      <Association Name="Contrato_ModificacionesContrato" Member="ModificacionesContrato" ThisKey="CodigoContrato" OtherKey="Contrato" Type="ModificacionesContrato" />
+      <Association Name="Contrato_AccionesLegalesContrato" Member="AccionesLegalesContrato" ThisKey="CodigoContrato" OtherKey="Contrato" Type="AccionesLegalesContrato" />
+      <Association Name="Contrato_GarantiaContrato" Member="GarantiaContrato" ThisKey="CodigoContrato" OtherKey="Contrato" Type="GarantiaContrato" />
+      <Association Name="Contrato_ReciboDocumentos" Member="ReciboDocumentos" ThisKey="CodigoContrato" OtherKey="Contrato" Type="ReciboDocumentos" />
+      <Association Name="Contrato_ContratoActividadAjustado" Member="ContratoActividadAjustado" ThisKey="CodigoContrato" OtherKey="Contrato" Type="ContratoActividadAjustado" />
+      <Association Name="AsignacionObra_Contrato" Member="AsignacionObra" ThisKey="Asignacion" OtherKey="IdAsignacion" Type="AsignacionObra" IsForeignKey="true" />
+      <Association Name="Tercero_Contrato" Member="Tercero" ThisKey="ContratanteContrato" OtherKey="IdTercero" Type="Tercero" IsForeignKey="true" />
+      <Association Name="Empresa_Contrato" Member="Empresa" ThisKey="Oferente" OtherKey="Id" Type="Empresa" IsForeignKey="true" />
+      <Association Name="EstadoContrato_Contrato" Member="EstadoContrato" ThisKey="Estado" OtherKey="IdEstado" Type="EstadoContrato" IsForeignKey="true" />
+      <Association Name="Tercero_Contrato1" Member="Tercero1" ThisKey="Interventor" OtherKey="IdTercero" Type="Tercero" IsForeignKey="true" />
+      <Association Name="Predio_Contrato" Member="Predio" ThisKey="PredioContrato" OtherKey="chip" Type="Predio" IsForeignKey="true" />
+      <Association Name="Tercero_Contrato2" Member="Tercero2" ThisKey="Supervisor" OtherKey="IdTercero" Type="Tercero" IsForeignKey="true" />
+      <Association Name="TipoObra_Contrato" Member="TipoObra1" ThisKey="TipoObra" OtherKey="IdTipoObra" Type="TipoObra" IsForeignKey="true" />
+      <Association Name="Proyecto_Contrato" Member="Proyecto1" ThisKey="Proyecto" OtherKey="IdProyecto" Type="Proyecto" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Vista_Contrato" Member="Vista_Contrato">
+    <Type Name="Vista_Contrato">
+      <Column Name="CodigoContrato" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DescripcionObra" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="TipoIdContratante" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="IdContratante" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="NombreContratante" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="chip" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Direccion" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Barrio" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Localidad" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="TipoIdOferente" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="IdOferente" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="NombreOferente" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DireccionOferente" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="TipoIdSupervisor" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="IdSupervisor" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="NombreSupervisor" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DireccionSupervisor" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="FechaActaInicio" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PlazoInicial" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PlazoAdicional" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TiempoSuspencion" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="FechaReinicio" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="FechaTerminacion" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PlazoTotal" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ValorSubsidio" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="ValorAportesBeneficiario" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="ValorAportesOferente" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="ValorContrato" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="TipoIdRepLegal" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="IdRepLegal" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="NombreRepLegal" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="TipoIdInterventor" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="IdInterventor" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="NombreInterventor" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Proyecto" Member="Proyecto">
+    <Type Name="Proyecto">
+      <Column Name="IdProyecto" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FechaInicio" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="FechaFin" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CantidadPredios" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PrediosEjecutado" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ValorProyecto" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="ValorEjecutado" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="NumDispPresupuestal" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="FechaDispPresupuestal" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CodDispPresupuestal" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="RubroDispPresupuestal" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ValorDispPresupuestal" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="NumResPresupuestal" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="FechaResPresupuestal" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CodResPresupuestal" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="RubroResPresupuestal" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ValorResPresupuestal" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Association Name="Proyecto_Contrato" Member="Contrato" ThisKey="IdProyecto" OtherKey="Proyecto" Type="Contrato" />
+      <Association Name="Proyecto_GarantiaProyecto" Member="GarantiaProyecto" ThisKey="IdProyecto" OtherKey="Proyecto" Type="GarantiaProyecto" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Usuarios" Member="Usuarios">
+    <Type Name="Usuarios">
+      <Column Name="Login" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Contrasena" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Tercero" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Usuarios_RolesUsuario" Member="RolesUsuario" ThisKey="Login" OtherKey="login_usuario" Type="RolesUsuario" />
+      <Association Name="Tercero_Usuarios" Member="Tercero1" ThisKey="Tercero" OtherKey="IdTercero" Type="Tercero" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TipoGarantia" Member="TipoGarantia">
+    <Type Name="TipoGarantia">
+      <Column Name="IdGarantia" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DescripcionGarantia" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Association Name="TipoGarantia_GarantiaProyecto" Member="GarantiaProyecto" ThisKey="IdGarantia" OtherKey="TipoGarantia" Type="GarantiaProyecto" />
+      <Association Name="TipoGarantia_GarantiaContrato" Member="GarantiaContrato" ThisKey="IdGarantia" OtherKey="TipoGarantia" Type="GarantiaContrato" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SuspencionContrato" Member="SuspencionContrato">
+    <Type Name="SuspencionContrato">
+      <Column Name="IdSuspencion" AutoSync="Never" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Contrato" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NumActa" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="TipoActa" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="FechaActaSuspencion" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="FechaInicioSuspencion" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="FechaFinSuspencion" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Duracion" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FechaReanudacion" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Contrato_SuspencionContrato" Member="Contrato1" ThisKey="Contrato" OtherKey="CodigoContrato" Type="Contrato" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SancionesContrato" Member="SancionesContrato">
+    <Type Name="SancionesContrato">
+      <Column Name="IdSancion" AutoSync="Never" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Contrato" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NumResolucion" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Objeto" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="Fecha" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Contrato_SancionesContrato" Member="Contrato1" ThisKey="Contrato" OtherKey="CodigoContrato" Type="Contrato" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RolesUsuario" Member="RolesUsuario">
+    <Type Name="RolesUsuario">
+      <Column Name="id_rol" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="login_usuario" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FechaAsignacionRol" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Roles_RolesUsuario" Member="Roles" ThisKey="id_rol" OtherKey="Id" Type="Roles" IsForeignKey="true" />
+      <Association Name="Usuarios_RolesUsuario" Member="Usuarios" ThisKey="login_usuario" OtherKey="Login" Type="Usuarios" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RolesMenu" Member="RolesMenu">
+    <Type Name="RolesMenu">
+      <Column Name="idRol" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="idMenu" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Roles_RolesMenu" Member="Roles" ThisKey="idRol" OtherKey="Id" Type="Roles" IsForeignKey="true" />
+      <Association Name="Menu_RolesMenu" Member="Menu" ThisKey="idMenu" OtherKey="id" Type="Menu" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ModificacionesContrato" Member="ModificacionesContrato">
+    <Type Name="ModificacionesContrato">
+      <Column Name="IdModificacion" AutoSync="Never" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Contrato" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TipoModificacion" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FechaModificacion" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PlazoModificacion" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ValorModificacion" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Association Name="Contrato_ModificacionesContrato" Member="Contrato1" ThisKey="Contrato" OtherKey="CodigoContrato" Type="Contrato" IsForeignKey="true" />
+      <Association Name="TipoModificacion_ModificacionesContrato" Member="TipoModificacion1" ThisKey="IdModificacion" OtherKey="IdTipoModificacion" Type="TipoModificacion" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Menu" Member="Menu">
+    <Type Name="Menu">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="pagina" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="Menu_RolesMenu" Member="RolesMenu" ThisKey="id" OtherKey="idMenu" Type="RolesMenu" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AccionesLegalesContrato" Member="AccionesLegalesContrato">
+    <Type Name="AccionesLegalesContrato">
+      <Column Name="IdAccion" AutoSync="Never" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Contrato" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Clase" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="EtapaProcesal" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Fecha" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Despacho" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="NumExpediente" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Contrato_AccionesLegalesContrato" Member="Contrato1" ThisKey="Contrato" OtherKey="CodigoContrato" Type="Contrato" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GarantiaProyecto" Member="GarantiaProyecto">
+    <Type Name="GarantiaProyecto">
+      <Column Name="IdGarantiaProyecto" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Proyecto" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TipoGarantia" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NombreAsegurador" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="NumPoliza" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="FechaInicioVigencia" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="FechaFinVigencia" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="NumCertModificatorio" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Proyecto_GarantiaProyecto" Member="Proyecto1" ThisKey="Proyecto" OtherKey="IdProyecto" Type="Proyecto" IsForeignKey="true" />
+      <Association Name="TipoGarantia_GarantiaProyecto" Member="TipoGarantia1" ThisKey="TipoGarantia" OtherKey="IdGarantia" Type="TipoGarantia" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GarantiaContrato" Member="GarantiaContrato">
+    <Type Name="GarantiaContrato">
+      <Column Name="IdGarantiaContrato" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Contrato" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TipoGarantia" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NombreAsegurador" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="NumPoliza" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="FechaInicioVigencia" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="FechaFinVigencia" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="NumCertModificatorio" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Contrato_GarantiaContrato" Member="Contrato1" ThisKey="Contrato" OtherKey="CodigoContrato" Type="Contrato" IsForeignKey="true" />
+      <Association Name="TipoGarantia_GarantiaContrato" Member="TipoGarantia1" ThisKey="TipoGarantia" OtherKey="IdGarantia" Type="TipoGarantia" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ReciboDocumentos" Member="ReciboDocumentos">
+    <Type Name="ReciboDocumentos">
+      <Column Name="Iddocumento" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Contrato" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Clase" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Cantidad" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Descripcion" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Association Name="Contrato_ReciboDocumentos" Member="Contrato1" ThisKey="Contrato" OtherKey="CodigoContrato" Type="Contrato" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ContratoActividadAjustado" Member="ContratoActividadAjustado">
+    <Type Name="ContratoActividadAjustado">
+      <Column Name="Contrato" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ActividadAjustada" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CantidadPresupuestada" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="ValorPresupuestado" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="CantidadReal" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="ValorReal" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="CantidadRealAjustada" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="ValorRealAjustado" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Association Name="Actividad_ContratoActividadAjustado" Member="Actividad" ThisKey="ActividadAjustada" OtherKey="IdActividad" Type="Actividad" IsForeignKey="true" />
+      <Association Name="Contrato_ContratoActividadAjustado" Member="Contrato1" ThisKey="Contrato" OtherKey="CodigoContrato" Type="Contrato" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TipoModificacion" Member="TipoModificacion">
+    <Type Name="TipoModificacion">
+      <Column Name="IdTipoModificacion" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DescripcionModificacion" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="TipoModificacion_ModificacionesContrato" Member="ModificacionesContrato" ThisKey="IdTipoModificacion" OtherKey="IdModificacion" Type="ModificacionesContrato" />
+    </Type>
+  </Table>
+</Database>
