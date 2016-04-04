@@ -21,6 +21,10 @@
                     <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" />
 
                 </td>
+                <td style="align-self:center">
+                    <asp:Button ID="btnRecordar" runat="server" Text="Recordar Contraseña" />
+
+                </td>
             </tr>
            </table>
     </div>
