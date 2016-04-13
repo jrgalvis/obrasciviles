@@ -21,9 +21,11 @@
                     <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" />
 
                 </td>
-                <td style="align-self:center">
-                    <asp:Button ID="btnRecordar" runat="server" Text="Recordar Contraseña" />
-
+               
+            </tr>
+            <tr>
+                <td colspan ="2">
+                    <asp:HyperLink ID="lnkCambioPwd" runat="server" NavigateUrl="~/CambiarPwd.aspx">¿Olvido su contraseña?</asp:HyperLink>
                 </td>
             </tr>
            </table>
